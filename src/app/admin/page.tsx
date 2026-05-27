@@ -1,5 +1,6 @@
 import { Check, Crown, ShieldAlert, UserCheck } from "lucide-react";
 import { updateMemberAccess } from "@/app/actions/admin";
+import { EmptyState } from "@/components/empty-state";
 import { getAppContext } from "@/lib/auth";
 import { getAllProfilesForAdmin } from "@/lib/admin-data";
 import { getTrackerData } from "@/lib/data";
@@ -95,7 +96,10 @@ export default async function AdminPage() {
       <section className="rounded-lg border border-black/10 bg-white p-5 shadow-panel">
         <h2 className="text-xl font-black">Problem schedule</h2>
         <div className="mt-3 grid gap-2">
-          {tracker.problems.map((problem) => (
+          {tracker.problems.length === 0 ? (
+            <EmptyState title="No scheduled problems yet" description="Problem posting will appear here once the database has problems." />
+          ) : (
+            tracker.problems.map((problem) => (
             <div key={problem.id} className="flex flex-wrap items-center justify-between gap-3 rounded-md bg-mist p-3">
               <div>
                 <p className="font-bold">{problem.title}</p>
@@ -105,7 +109,8 @@ export default async function AdminPage() {
               </div>
               <Check className="h-4 w-4 text-moss" />
             </div>
-          ))}
+            ))
+          )}
         </div>
       </section>
     </div>

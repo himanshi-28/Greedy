@@ -1,16 +1,15 @@
 import { Medal } from "lucide-react";
+import { EmptyState } from "@/components/empty-state";
 import type { LeaderboardRow } from "@/lib/types";
 import { formatDuration } from "@/lib/utils";
 
 export function LeaderboardTable({ rows }: { rows: LeaderboardRow[] }) {
   if (rows.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-black/10 bg-white p-6 text-center shadow-panel">
-        <p className="text-lg font-black">No leaderboard entries yet</p>
-        <p className="mt-2 text-sm text-ink/60">
-          Approved members will appear here after their first accepted submission.
-        </p>
-      </div>
+      <EmptyState
+        title="No leaderboard entries yet"
+        description="Approved members will appear here after their first accepted submission."
+      />
     );
   }
 

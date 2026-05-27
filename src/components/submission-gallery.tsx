@@ -1,4 +1,5 @@
 import { Code2 } from "lucide-react";
+import { EmptyState } from "@/components/empty-state";
 import type { Attempt, Profile } from "@/lib/types";
 import { formatDuration } from "@/lib/utils";
 
@@ -7,10 +8,10 @@ export function SubmissionGallery({ attempts, profiles }: { attempts: Attempt[];
 
   if (accepted.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-black/10 bg-white p-6 text-center shadow-panel">
-        <p className="font-black">No shared solutions yet</p>
-        <p className="mt-2 text-sm text-ink/60">Accepted solution code will appear here after members submit it.</p>
-      </div>
+      <EmptyState
+        title="No shared solutions yet"
+        description="Accepted solution code will appear here after members submit it."
+      />
     );
   }
 

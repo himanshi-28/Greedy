@@ -21,7 +21,7 @@ export function ProblemCard({ problem, label }: { problem: Problem; label: strin
         </span>
       </div>
       <div className="mt-5 flex flex-wrap items-center gap-2">
-        {problem.tags.map((tag) => (
+        {(problem.tags ?? []).map((tag) => (
           <span key={tag} className="inline-flex items-center gap-1 rounded-md bg-mist px-2.5 py-1 text-sm text-ink/75">
             <Tags className="h-3.5 w-3.5" />
             {tag}

@@ -1,16 +1,16 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { Attempt, Problem, Profile } from "@/lib/types";
+import type { Attempt, Difficulty, Problem, ProblemStatus, Profile } from "@/lib/types";
 import { mapProfile } from "@/lib/auth";
 
 type RawProblem = {
-  id: string;
-  leetcode_url: string;
-  slug: string;
-  title: string;
-  difficulty: "Easy" | "Medium" | "Hard";
-  tags: string[];
-  publish_date: string;
-  status: "draft" | "scheduled" | "active" | "archived";
+  id: string | null;
+  leetcode_url: string | null;
+  slug: string | null;
+  title: string | null;
+  difficulty: Difficulty | null;
+  tags: string[] | null;
+  publish_date: string | null;
+  status: ProblemStatus | null;
 };
 
 type RawAttempt = {
@@ -25,29 +25,20 @@ type RawAttempt = {
   duration_seconds: number | null;
 };
 
-export const fallbackProblems: Problem[] = [
-  {
-    id: "setup-problem",
-    leetcodeUrl: "https://leetcode.com/problemset/",
-    slug: "choose-todays-problem",
-    title: "Choose Today's Problem",
-    difficulty: "Medium",
-    tags: ["Admin setup"],
-    publishDate: new Date().toISOString().slice(0, 10),
-    status: "active"
+function mapProblem(problem: RawProblem): Problem | null {
+  if (!problem.id || !problem.title || !problem.slug || !problem.leetcode_url || !problem.publish_date) {
+    return null;
   }
-];
 
-function mapProblem(problem: RawProblem): Problem {
   return {
     id: problem.id,
     leetcodeUrl: problem.leetcode_url,
     slug: problem.slug,
     title: problem.title,
-    difficulty: problem.difficulty,
+    difficulty: problem.difficulty ?? "Medium",
     tags: problem.tags ?? [],
     publishDate: problem.publish_date,
-    status: problem.status
+    status: problem.status ?? "draft"
   };
 }
 
@@ -69,7 +60,7 @@ export async function getTrackerData() {
   const supabase = await createSupabaseServerClient();
 
   if (!supabase) {
-    return { profiles: [] as Profile[], problems: fallbackProblems, attempts: [] as Attempt[] };
+    return { profiles: [] as Profile[], problems: [] as Problem[], attempts: [] as Attempt[] };
   }
 
   const [profilesResult, problemsResult, attemptsResult] = await Promise.all([
@@ -89,7 +80,9 @@ export async function getTrackerData() {
 
   return {
     profiles: (profilesResult.data ?? []).map((profile) => mapProfile(profile as never)),
-    problems: (problemsResult.data ?? []).map((problem) => mapProblem(problem as RawProblem)),
+    problems: (problemsResult.data ?? [])
+      .map((problem) => mapProblem(problem as RawProblem))
+      .filter((problem): problem is Problem => Boolean(problem)),
     attempts: (attemptsResult.data ?? []).map((attempt) => mapAttempt(attempt as RawAttempt))
   };
 }
