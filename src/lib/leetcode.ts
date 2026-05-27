@@ -2,6 +2,27 @@ import type { VerificationResult } from "@/lib/types";
 
 const submissionPattern =
   /^https:\/\/leetcode\.com\/problems\/(?<slug>[a-z0-9-]+)\/submissions\/(?<submissionId>\d+)\/?$/i;
+const problemPattern = /^https:\/\/leetcode\.com\/problems\/(?<slug>[a-z0-9-]+)\/?/i;
+
+export function titleFromSlug(slug: string) {
+  return slug
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.slice(0, 1).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+export function parseLeetCodeProblemUrl(url: string) {
+  const match = problemPattern.exec(url.trim());
+  if (!match?.groups?.slug) {
+    return null;
+  }
+
+  return {
+    slug: match.groups.slug,
+    title: titleFromSlug(match.groups.slug)
+  };
+}
 
 export function parseLeetCodeSubmissionUrl(url: string) {
   const match = submissionPattern.exec(url.trim());

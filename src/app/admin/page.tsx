@@ -1,5 +1,5 @@
 import { Check, Crown, ShieldAlert, UserCheck } from "lucide-react";
-import { updateMemberAccess } from "@/app/actions/admin";
+import { createProblem, updateMemberAccess } from "@/app/actions/admin";
 import { EmptyState } from "@/components/empty-state";
 import { getAppContext } from "@/lib/auth";
 import { getAllProfilesForAdmin } from "@/lib/admin-data";
@@ -41,6 +41,7 @@ export default async function AdminPage() {
 
   const [members, tracker] = await Promise.all([getAllProfilesForAdmin(), getTrackerData()]);
   const approvedCount = members.filter((member) => member.status === "approved").length;
+  const today = new Date().toISOString().slice(0, 10);
 
   return (
     <div className="grid gap-6">
@@ -91,6 +92,68 @@ export default async function AdminPage() {
             ))
           )}
         </div>
+      </section>
+
+      <section className="rounded-lg border border-black/10 bg-white p-5 shadow-panel">
+        <p className="text-sm font-semibold uppercase tracking-wide text-ocean">Problems</p>
+        <h2 className="mt-2 text-3xl font-black">Add daily problem</h2>
+        <form action={createProblem} className="mt-5 grid gap-3">
+          <label className="grid gap-1 text-sm font-bold">
+            LeetCode problem link
+            <input
+              name="leetcodeUrl"
+              type="url"
+              placeholder="https://leetcode.com/problems/two-sum/"
+              className="h-11 rounded-md border border-black/10 px-3 font-normal outline-none focus:border-ocean"
+              required
+            />
+          </label>
+          <div className="grid gap-3 md:grid-cols-[1fr_160px_180px]">
+            <label className="grid gap-1 text-sm font-bold">
+              Title
+              <input
+                name="title"
+                placeholder="Optional, auto-filled from link"
+                className="h-11 rounded-md border border-black/10 px-3 font-normal outline-none focus:border-ocean"
+              />
+            </label>
+            <label className="grid gap-1 text-sm font-bold">
+              Difficulty
+              <select
+                name="difficulty"
+                defaultValue="Medium"
+                className="h-11 rounded-md border border-black/10 px-3 font-normal outline-none focus:border-ocean"
+              >
+                <option>Easy</option>
+                <option>Medium</option>
+                <option>Hard</option>
+              </select>
+            </label>
+            <label className="grid gap-1 text-sm font-bold">
+              Date
+              <input
+                name="publishDate"
+                type="date"
+                defaultValue={today}
+                className="h-11 rounded-md border border-black/10 px-3 font-normal outline-none focus:border-ocean"
+              />
+            </label>
+          </div>
+          <label className="grid gap-1 text-sm font-bold">
+            Tags
+            <input
+              name="tags"
+              placeholder="Array, Hash Table, Sliding Window"
+              className="h-11 rounded-md border border-black/10 px-3 font-normal outline-none focus:border-ocean"
+            />
+          </label>
+          <p className="text-sm text-ink/60">
+            Today&apos;s date becomes the active daily problem. Future dates are added to the schedule.
+          </p>
+          <button className="inline-flex h-11 items-center justify-center rounded-md bg-ink px-4 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-ocean">
+            Add problem
+          </button>
+        </form>
       </section>
 
       <section className="rounded-lg border border-black/10 bg-white p-5 shadow-panel">
