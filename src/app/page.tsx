@@ -2,17 +2,18 @@ import { Award, Clock, ShieldCheck } from "lucide-react";
 import { LeaderboardTable } from "@/components/leaderboard-table";
 import { ProblemCard } from "@/components/problem-card";
 import { TimerSubmission } from "@/components/timer-submission";
-import { attempts, problems, profiles } from "@/lib/mock-data";
+import { getTrackerData } from "@/lib/data";
 import { buildLeaderboard } from "@/lib/scoring";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const { profiles, problems, attempts } = await getTrackerData();
   const today = problems.find((problem) => problem.status === "active") ?? problems[0];
   const rows = buildLeaderboard(profiles, attempts, "daily");
 
   return (
     <div className="grid gap-6">
       <section className="grid gap-4 lg:grid-cols-[1.3fr_0.7fr]">
-        <ProblemCard problem={today} label="Today&apos;s problem" />
+        <ProblemCard problem={today} label="Today's problem" />
         <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
           <div className="rounded-lg border border-black/10 bg-white p-5 shadow-panel">
             <Award className="h-5 w-5 text-gold" />

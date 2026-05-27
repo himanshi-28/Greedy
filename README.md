@@ -20,6 +20,13 @@ This repo includes `render.yaml`. On Render, create a new Blueprint from the Git
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
+- `ADMIN_EMAIL`
+- `NEXT_PUBLIC_SITE_URL`
+
+For Google auth, add these Supabase redirect URLs:
+
+- `https://leetcode-tracker-qliz.onrender.com/auth/callback`
+- `http://localhost:3000/auth/callback`
 
 ## Product Rules
 

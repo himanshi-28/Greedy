@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { CheckCircle2, Play, RotateCcw, Send, StopCircle } from "lucide-react";
 import type { Attempt, PointsSource, Problem } from "@/lib/types";
 import { verifyLeetCodeSubmission } from "@/lib/leetcode";
@@ -19,7 +19,7 @@ export function TimerSubmission({ problem, source }: Props) {
   const [code, setCode] = useState("");
   const [attempt, setAttempt] = useState<Attempt | null>(null);
 
-  useMemo(() => {
+  useEffect(() => {
     if (!startedAt) {
       return;
     }

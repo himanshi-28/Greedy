@@ -3,6 +3,17 @@ import type { LeaderboardRow } from "@/lib/types";
 import { formatDuration } from "@/lib/utils";
 
 export function LeaderboardTable({ rows }: { rows: LeaderboardRow[] }) {
+  if (rows.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed border-black/10 bg-white p-6 text-center shadow-panel">
+        <p className="text-lg font-black">No leaderboard entries yet</p>
+        <p className="mt-2 text-sm text-ink/60">
+          Approved members will appear here after their first accepted submission.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-hidden rounded-lg border border-black/10 bg-white shadow-panel">
       <table className="w-full border-collapse text-left">
@@ -27,7 +38,9 @@ export function LeaderboardTable({ rows }: { rows: LeaderboardRow[] }) {
               </td>
               <td className="px-4 py-4">
                 <div className="font-bold">{row.user.displayName}</div>
-                <div className="text-sm text-ink/55">@{row.user.leetcodeUsername}</div>
+                <div className="text-sm text-ink/55">
+                  {row.user.leetcodeUsername ? `@${row.user.leetcodeUsername}` : row.user.email}
+                </div>
               </td>
               <td className="px-4 py-4 text-lg font-black">{row.points}</td>
               <td className="px-4 py-4">{row.solved}</td>

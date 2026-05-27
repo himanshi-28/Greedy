@@ -4,25 +4,33 @@ export const profiles: Profile[] = [
   {
     id: "u1",
     displayName: "Aarav",
+    email: "aarav@example.com",
     role: "admin",
+    status: "approved",
     leetcodeUsername: "aarav_codes"
   },
   {
     id: "u2",
     displayName: "Mira",
+    email: "mira@example.com",
     role: "member",
+    status: "approved",
     leetcodeUsername: "mira_dp"
   },
   {
     id: "u3",
     displayName: "Kabir",
+    email: "kabir@example.com",
     role: "member",
+    status: "approved",
     leetcodeUsername: "kabir_graphs"
   },
   {
     id: "u4",
     displayName: "Isha",
+    email: "isha@example.com",
     role: "member",
+    status: "approved",
     leetcodeUsername: "isha_binary"
   }
 ];

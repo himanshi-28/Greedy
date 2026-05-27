@@ -5,6 +5,15 @@ import { formatDuration } from "@/lib/utils";
 export function SubmissionGallery({ attempts, profiles }: { attempts: Attempt[]; profiles: Profile[] }) {
   const accepted = attempts.filter((attempt) => attempt.status === "accepted" && attempt.code);
 
+  if (accepted.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed border-black/10 bg-white p-6 text-center shadow-panel">
+        <p className="font-black">No shared solutions yet</p>
+        <p className="mt-2 text-sm text-ink/60">Accepted solution code will appear here after members submit it.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="grid gap-4 lg:grid-cols-2">
       {accepted.map((attempt) => {

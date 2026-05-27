@@ -1,10 +1,11 @@
 import { LeaderboardTable } from "@/components/leaderboard-table";
 import { ProblemCard } from "@/components/problem-card";
 import { TimerSubmission } from "@/components/timer-submission";
-import { attempts, problems, profiles } from "@/lib/mock-data";
+import { getTrackerData } from "@/lib/data";
 import { buildLeaderboard } from "@/lib/scoring";
 
-export default function RevisionPage() {
+export default async function RevisionPage() {
+  const { profiles, problems, attempts } = await getTrackerData();
   const revisionProblem = problems.find((problem) => problem.status === "archived") ?? problems[0];
   const rows = buildLeaderboard(profiles, attempts, "revision");
 

@@ -1,4 +1,5 @@
 export type Role = "admin" | "member";
+export type ProfileStatus = "pending" | "approved" | "rejected";
 export type Difficulty = "Easy" | "Medium" | "Hard";
 export type ProblemStatus = "draft" | "scheduled" | "active" | "archived";
 export type AttemptStatus = "started" | "accepted" | "needs_review" | "rejected";
@@ -7,7 +8,10 @@ export type PointsSource = "daily" | "revision" | "admin_adjustment";
 export type Profile = {
   id: string;
   displayName: string;
+  email?: string;
+  avatarUrl?: string;
   role: Role;
+  status: ProfileStatus;
   leetcodeUsername: string;
 };
 
